@@ -21,6 +21,6 @@ aplication.use(bodyParser.json())
 aplication.use(bodyParser.urlencoded({ extended: true}))
 aplication.use(routes)
 
-server.listen(3333, function () {
+server.listen(process.env.PORT || 3333, function () {
     console.log('localhost is ok')
 });
