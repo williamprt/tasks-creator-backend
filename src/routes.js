@@ -35,7 +35,11 @@ routes.post('/tasks', async function (req, res) {
     req.io.emit('task', createnewproduct);
     req.io.emit('info', createnewproduct);
 
-    return res.json(createnewproduct);
+    try {
+        return res.json(createnewproduct)
+    } catch (e) {
+        console.log(e)
+    }
 });
 routes.put('/tasks/:id', async function (req, res) {
     let updatetask = await Products.findByIdAndUpdate(req.params.id, req.body);
