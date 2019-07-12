@@ -1,5 +1,7 @@
 const express = require('express');
 const Products = require('./models/products');
+const multer = require('multer');
+const upload = multer();
 
 let routes = new express.Router();
 routes.get('/', function (req, res) {
@@ -12,21 +14,25 @@ routes.get('/', function (req, res) {
         case undefined: {
             res.send(`Hello, ${value.default}.`);
 
-            break
+            break;
         }
         default: {
             res.send(`Hello, ${value.name}.`);
 
-            break
+            break;
         }
     };
 });
 routes.get('/tasks', async function (req, res) {
     let indexofproducts = await Products.find().sort('-createdAt');
 
-    return res.json(indexofproducts);
+    try {
+        return res.json(indexofproducts);    
+    } catch (e) {
+        console.log(e)
+    };
 });
-routes.post('/tasks', async function (req, res) {
+routes.post('/tasks', upload.none(), async function (req, res) {
     const { task, info } = req.body;
     let createnewproduct = await Products.create({
         task,
@@ -41,16 +47,24 @@ routes.post('/tasks', async function (req, res) {
         console.log(e)
     }
 });
-routes.put('/tasks/:id', async function (req, res) {
+routes.put('/tasks/:id', upload.none(), async function (req, res) {
     let updatetask = await Products.findByIdAndUpdate(req.params.id, req.body);
 
-    return res.json(updatetask);
+    try {
+        return res.json(updatetask); 
+    } catch (e) {
+        console.log(e)
+    };
 });
 routes.delete('/tasks/:id', async function (req, res) {
     let deleteproduct = await Products.findOneAndRemove(req.params.id);
     console.log(`Deleted object: ${deleteproduct}`);
     
-    return res.json(deleteproduct);
-})
+    try {
+        return res.json(deleteproduct);
+    } catch (e) {
+        console.log(e)
+    };
+});
 
 module.exports = routes;
