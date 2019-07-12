@@ -1,5 +1,7 @@
 const express = require('express');
 const Products = require('./models/products');
+const multer = require('multer');
+const upload = multer();
 
 let routes = new express.Router();
 routes.get('/', function (req, res) {
@@ -26,7 +28,7 @@ routes.get('/tasks', async function (req, res) {
 
     return res.json(indexofproducts);
 });
-routes.post('/tasks', async function (req, res) {
+routes.post('/tasks', upload.none(), async function (req, res) {
     const { task, info } = req.body;
     let createnewproduct = await Products.create({
         task,
@@ -37,7 +39,7 @@ routes.post('/tasks', async function (req, res) {
 
     return res.json(createnewproduct);
 });
-routes.put('/tasks/:id', async function (req, res) {
+routes.put('/tasks/:id', upload.none(), async function (req, res) {
     let updatetask = await Products.findByIdAndUpdate(req.params.id, req.body);
 
     return res.json(updatetask);

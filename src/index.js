@@ -1,9 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const cluster = require('./cluster/connections');
 const routes = require('./routes');
-
 
 let aplication = express();
 let server = require('http').Server(aplication);
@@ -17,8 +15,6 @@ aplication.use((req, res, next) => {
     next()
 });
 aplication.use(cors())
-aplication.use(bodyParser.json())
-aplication.use(bodyParser.urlencoded({ extended: true}))
 aplication.use(routes)
 
 server.listen(process.env.PORT || 3333, function () {
