@@ -10,12 +10,12 @@ routes.get('/', function (req, res) {
 
     switch (value.name) {
         case undefined: {
-            res.send(`Hello, ${value.default}. Use ?name=[your name] and see what happens :)`);
+            res.send(`Hello, ${value.default}.`);
 
             break
         }
         default: {
-            res.send(`Hello, ${value.name}`);
+            res.send(`Hello, ${value.name}.`);
 
             break
         }
@@ -32,7 +32,8 @@ routes.post('/tasks', async function (req, res) {
         task,
         info,
     });
-    RealTimeWithSocketIO(['task', 'info'], createnewproduct)
+    req.io.emit('task', createnewproduct);
+    req.io.emit('info', createnewproduct);
 
     return res.json(createnewproduct);
 });
@@ -47,9 +48,5 @@ routes.delete('/tasks/:id', async function (req, res) {
     
     return res.json(deleteproduct);
 })
-
-function RealTimeWithSocketIO(value, variable) {
-    return req.io.emit(value, variable)
-};
 
 module.exports = routes;
