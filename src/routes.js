@@ -26,11 +26,7 @@ routes.get('/', function (req, res) {
 routes.get('/tasks', async function (req, res) {
     let indexofproducts = await Products.find().sort('-createdAt');
 
-    try {
-        return res.json(indexofproducts);    
-    } catch (e) {
-        console.log(e)
-    };
+    return res.json(indexofproducts);    
 });
 routes.post('/tasks', upload.none(), async function (req, res) {
     const { task, info } = req.body;
@@ -41,30 +37,18 @@ routes.post('/tasks', upload.none(), async function (req, res) {
     req.io.emit('task', createnewproduct);
     req.io.emit('info', createnewproduct);
 
-    try {
-        return res.json(createnewproduct)
-    } catch (e) {
-        console.log(e)
-    }
+    return res.json(createnewproduct)
 });
 routes.put('/tasks/:id', upload.none(), async function (req, res) {
     let updatetask = await Products.findByIdAndUpdate(req.params.id, req.body);
 
-    try {
-        return res.json(updatetask); 
-    } catch (e) {
-        console.log(e)
-    };
+    return res.json(updatetask); 
 });
 routes.delete('/tasks/:id', async function (req, res) {
     let deleteproduct = await Products.findOneAndRemove(req.params.id);
     console.log(`Deleted object: ${deleteproduct}`);
     
-    try {
-        return res.json(deleteproduct);
-    } catch (e) {
-        console.log(e)
-    };
+    return res.json(deleteproduct);
 });
 
 module.exports = routes;
