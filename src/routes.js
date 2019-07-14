@@ -12,12 +12,12 @@ routes.get('/', function (req, res) {
 
     switch (value.name) {
         case undefined: {
-            res.send(`Hello, ${value.default}.`);
+            res.send(`Hello, ${value.default}. I'm working`);
 
             break;
         }
         default: {
-            res.send(`Hello, ${value.name}.`);
+            res.send(`Hello, ${value.name}. I'm working`);
 
             break;
         }
@@ -34,8 +34,8 @@ routes.post('/tasks', upload.none(), async function (req, res) {
         task,
         info,
     });
-    req.io.emit('task', createnewproduct);
-    req.io.emit('info', createnewproduct);
+    EmitIO('task', createnewproduct);
+    EmitIO('info', createnewproduct);
 
     return res.json(createnewproduct)
 });
@@ -50,5 +50,10 @@ routes.delete('/tasks/:id', async function (req, res) {
     
     return res.json(deleteproduct);
 });
+
+
+function EmitIO(value, variable) {
+    return req.io.emit(value, variable)
+};
 
 module.exports = routes;
