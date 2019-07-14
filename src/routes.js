@@ -52,8 +52,14 @@ routes.delete('/tasks/:id', async function (req, res) {
 });
 
 
-function EmitIO(value, variable) {
-    return req.io.emit(value, variable)
+function EmitIO(req, res, value, variable) {
+    try {
+        req.io.emit(value, variable)
+    } catch (e) {
+        routes.get('/', function (req, res) {
+            res.send(`Cannot use socketio. ${e}`)
+        })
+    };
 };
 
 module.exports = routes;
