@@ -5,12 +5,12 @@ const routes = require('./routes');
 const url = require('./url');
 
 let aplication = express();
+UseCORS();
 let server = require('http').Server(aplication);
 let io = require('socket.io')(server)
 
 ConnectToMongoose();
 UseSocketIO();
-UseCORS();
 UseRoutes();
 
 server.listen(process.env.PORT || 3333, function () {

@@ -45,10 +45,10 @@ routes.put('/tasks/:id', upload.none(), async function (req, res) {
     return res.json(updatetask); 
 });
 routes.delete('/tasks/:id', async function (req, res) {
-    let deleteproduct = await Products.findOneAndRemove(req.params.id);
+    let deleteproduct = await Products.findByIdAndDelete(req.params.id);
     console.log(`Deleted object: ${deleteproduct}`);
     
-    return res.json(deleteproduct);
+ return res.json(deleteproduct);
 });
 
 
